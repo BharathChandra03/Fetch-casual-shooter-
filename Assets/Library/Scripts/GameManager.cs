@@ -45,13 +45,6 @@ public class GameManager : MonoBehaviour
        
     }
 
-
-    /*private void Update()
-    {
-        //HeartSystem();
-        //PlayerDead();
-    }*/
-
     private void HeartSystem()
     {
         numOfHearts = health;

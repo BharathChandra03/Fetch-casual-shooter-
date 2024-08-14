@@ -20,7 +20,8 @@ public class AnimalHunger : MonoBehaviour
     public Slider hungerSlider;
     private GameManager gameManager;
     private AudioManager audioManager;
-    //private PoolManager poolManager;
+
+    public string hurtSound = "Hurt";
 
 
     // Start is called before the first frame update
@@ -32,7 +33,6 @@ public class AnimalHunger : MonoBehaviour
        
         gameManager = GameManager.gameManager;
         audioManager = AudioManager.audioManager;
-        //poolManager = PoolManager.poolManager;
     }
 
     // Update is called once per frame
@@ -53,7 +53,7 @@ public class AnimalHunger : MonoBehaviour
         {
             gameManager.loseHealth();
             gameObject.SetActive(false);
-            audioManager.PlayerAudio();
+            audioManager.PlaySFX(hurtSound);
         }
     }
 
@@ -88,8 +88,8 @@ public class AnimalHunger : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            
-            audioManager.PlayerAudio();
+
+            audioManager.PlaySFX(hurtSound);
             gameManager.loseHealth();
             gameObject.SetActive(false);
         }

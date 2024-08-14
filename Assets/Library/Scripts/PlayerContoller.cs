@@ -17,6 +17,8 @@ public class PlayerContoller : MonoBehaviour
     private AudioManager audioManager;
     private GameManager gameManager;
 
+    public string powerUpSound = "PowerUp";
+
     private void Start()
     {
         audioManager = AudioManager.audioManager;
@@ -59,14 +61,14 @@ public class PlayerContoller : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Health"))
         {
-            audioManager.CollectableAudio();
+            audioManager.PlaySFX(powerUpSound);
             Destroy(other.gameObject);
             gameManager.IncreaseHealth();
         }
 
         if (other.gameObject.layer == LayerMask.NameToLayer("DoubleScore"))
         {
-            audioManager.CollectableAudio();
+            audioManager.PlaySFX(powerUpSound);
             Destroy(other.gameObject);
             hasDScorePowerUp = true;
 
