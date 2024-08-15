@@ -13,7 +13,9 @@ public class AnimalHunger : MonoBehaviour
     [SerializeField] private int score;
     [SerializeField] private int Dscore;
 
-    private int currentMountFed = 0;
+    //public GameObject animalPrefab;
+
+    private int currentAmountFed = 0;
     private int resetAmount = 0;
     private int minValue = 0;
 
@@ -22,6 +24,9 @@ public class AnimalHunger : MonoBehaviour
     private AudioManager audioManager;
 
     public string hurtSound = "Hurt";
+    //public string foodSound = "Food";
+
+    //[SerializeField] private int amount;
 
 
     // Start is called before the first frame update
@@ -59,17 +64,17 @@ public class AnimalHunger : MonoBehaviour
 
     public void FeedAnimal(int amount)
     {
-        currentMountFed += amount;
+        currentAmountFed += amount;
         hungerSlider.fillRect.gameObject.SetActive(true);
-        hungerSlider.value = currentMountFed;
+        hungerSlider.value = currentAmountFed;
         
        
-        if (currentMountFed >= amountToFed)
+        if (currentAmountFed >= amountToFed)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
             hungerSlider.value = minValue;
             hungerSlider.fillRect.gameObject.SetActive(false);
-            currentMountFed = resetAmount;
+            currentAmountFed = resetAmount;
         }
 
         if(gameManager.player.hasDScorePowerUp)
@@ -91,9 +96,8 @@ public class AnimalHunger : MonoBehaviour
 
             audioManager.PlaySFX(hurtSound);
             gameManager.loseHealth();
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
-        
     }
 
 }

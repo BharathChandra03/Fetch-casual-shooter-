@@ -380,12 +380,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  topBound: 35
+  topBound: 50
   lowerBound: -5
   amountToFed: 1
   score: 5
   Dscore: 10
+  animalPrefab: {fileID: 0}
   hungerSlider: {fileID: 8857860690758061763}
+  hurtSound: Hurt
 --- !u!1 &8579798458325245611
 GameObject:
   m_ObjectHideFlags: 0

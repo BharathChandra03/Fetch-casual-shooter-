@@ -46,7 +46,7 @@ public class AnimalFood : MonoBehaviour
         {
             audioManager.PlaySFX(foodSound);
             other.GetComponent<AnimalHunger>().FeedAnimal(amount);
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }
