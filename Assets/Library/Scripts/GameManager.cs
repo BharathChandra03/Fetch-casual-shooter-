@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public int health = 3;
     public int numOfHearts;
     public Image[] hearts;
-    public Sprite fullHeart;
+    public Sprite Heart;
 
     public PlayerContoller player;
 
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         {
             if (i < health)
             {
-                hearts[i].sprite = fullHeart;
+                hearts[i].sprite = Heart;
             }
 
             if (i < numOfHearts)

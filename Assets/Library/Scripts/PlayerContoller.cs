@@ -72,7 +72,7 @@ public class PlayerContoller : MonoBehaviour
             Destroy(other.gameObject);
             hasDScorePowerUp = true;
 
-            if(powerUpCoroutine!= null)
+            if (powerUpCoroutine != null)
             {
                 StopCoroutine(powerUpCoroutine);
             }

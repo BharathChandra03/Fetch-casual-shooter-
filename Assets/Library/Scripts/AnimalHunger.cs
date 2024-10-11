@@ -24,9 +24,6 @@ public class AnimalHunger : MonoBehaviour
     private AudioManager audioManager;
 
     public string hurtSound = "Hurt";
-    //public string foodSound = "Food";
-
-    //[SerializeField] private int amount;
 
 
     // Start is called before the first frame update
@@ -46,7 +43,7 @@ public class AnimalHunger : MonoBehaviour
         AnimalMovements();
     }
 
-    void AnimalMovements()
+    public void AnimalMovements()
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
 

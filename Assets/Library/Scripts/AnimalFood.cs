@@ -10,6 +10,8 @@ public class AnimalFood : MonoBehaviour
 
     [SerializeField] private int amount;
 
+    public GameObject player;
+
     private AudioManager audioManager;
 
     public string foodSound = "Food";

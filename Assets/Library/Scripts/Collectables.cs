@@ -8,7 +8,6 @@ public class Collectables : MonoBehaviour
     [SerializeField] private float topBound;
     [SerializeField] private float lowerBound;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,5 +29,4 @@ public class Collectables : MonoBehaviour
         }
 
     }
-
 }
