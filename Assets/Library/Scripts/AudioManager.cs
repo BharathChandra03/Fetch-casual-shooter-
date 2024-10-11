@@ -7,16 +7,19 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager audioManager;
 
-    public AudioSource audioSource;
+    public AudioSource sfxSource;
 
-    public AudioClip collectableAudio;
-    public AudioClip playerAudio;
-    public AudioClip animalFoodAudio;
+    public Dictionary<string, AudioClip> sfxDictionary;
 
-    public Slider volumeSlider;
+    [System.Serializable]
+    public struct NamedSfx
+    {
+        public string name;
+        public AudioClip clip;
 
-    [SerializeField] private float defaultVolume;
-    [SerializeField] private float volume;
+    }
+
+    public NamedSfx[] sfxClips;
 
     private void Awake()
     {
@@ -30,40 +33,27 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //var initialVolume = PlayerPrefs.GetFloat("Volume", defaultVolume);
+        sfxDictionary = new Dictionary<string, AudioClip>();
+
+        foreach(var sfx in sfxClips)
+        {
+            if(!sfxDictionary.ContainsKey(sfx.name))
+            {
+                sfxDictionary.Add(sfx.name, sfx.clip);
+            }
+        }
+
     }
 
-    private void Start()
+    public void PlaySFX(string name)
     {
-        audioSource.volume = PlayerPrefs.GetFloat("Volume", volume);
-        volumeSlider.value = audioSource.volume;
-        volumeSlider.onValueChanged.AddListener(UpdateVolume);
-    }
-
-    public void CollectableAudio()
-    {
-        audioSource.PlayOneShot(collectableAudio);
-    }
-
-    public void PlayerAudio()
-    {
-        audioSource.PlayOneShot(playerAudio);
-    }    
-
-    public void AnimalFoodAudio()
-    {
-        audioSource.PlayOneShot(animalFoodAudio);
-    }
-
-
-    public void UpdateVolume(float volume)
-    {
-        audioSource.volume = volume;
-        PlayerPrefs.SetFloat("Volume", volume);
-    }
-
-    public void ResetVolume()
-    {
-        volumeSlider.value = audioSource.volume;
+        if(sfxDictionary.ContainsKey(name))
+        {
+            sfxSource.PlayOneShot(sfxDictionary[name]);
+        }
+        else
+        {
+            Debug.LogWarning("SFX withe name " + name + "not found");
+        }
     }
 }

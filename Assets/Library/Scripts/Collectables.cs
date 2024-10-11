@@ -8,7 +8,6 @@ public class Collectables : MonoBehaviour
     [SerializeField] private float topBound;
     [SerializeField] private float lowerBound;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -18,17 +17,22 @@ public class Collectables : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CollectableMovements();
+
+    }
+
+    void CollectableMovements()
+    {
         transform.Translate(Vector3.forward.normalized * speed * Time.deltaTime);
 
         if (transform.position.z > topBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else if (transform.position.z < lowerBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
-
     }
+}   
 
-}

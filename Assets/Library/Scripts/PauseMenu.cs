@@ -5,16 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-
+    const string mainmenu = "MainMenu";
+    const string game = "Game";
     public static bool gameIsPaused = false;
     public GameObject pauseMenuUI;
     public GameObject AudioMenuUI;
-    
+
+    private GameManager gameManager;
 
     // Update is called once per frame
-    void Update()
+    private void Start()
     {
-       
+        gameManager = GameManager.gameManager;
     }
 
     public void Pause_Menu()
@@ -41,5 +43,19 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         AudioMenuUI.SetActive(true);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1f;
+        gameManager.ResetScore();
+        SceneManager.LoadScene(game);
+    }
+
+    public void Menu()
+    {
+        gameManager.ResetScore();
+        SceneManager.LoadScene(mainmenu);
+        
     }
 }

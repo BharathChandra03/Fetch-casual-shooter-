@@ -35,19 +35,21 @@ public class SpwanManager : MonoBehaviour
 
     void animalSpawning()
     {
-        Vector3 cSpawnPos = new Vector3(Random.Range(-spawnPosX, spawnPosX), spawnposY, spawnPosZ);
+        Vector3 aSpawnPos = new Vector3(Random.Range(-spawnPosX, spawnPosX), spawnposY, spawnPosZ);
         int animalIndex = Random.Range(0, animalPrefab.Length);
-        Instantiate(animalPrefab[animalIndex], cSpawnPos, animalPrefab[animalIndex].transform.rotation);
+        //Instantiate(animalPrefab[animalIndex], cSpawnPos, animalPrefab[animalIndex].transform.rotation);
+        GameObject animal = ObjectPooler.Instance.SpawnFromPool("Animals", aSpawnPos, animalPrefab[animalIndex].transform.rotation);
     }
 
     void collectablesSpawning()
     {
         Vector3 cSpawnPos = new Vector3(Random.Range(-spawnPosX, spawnPosX), spawnposY, spawnPosZ);
         int collectableIndex = Random.Range(0, collectablePrefab.Length);
-        Instantiate(collectablePrefab[collectableIndex], cSpawnPos, collectablePrefab[collectableIndex].transform.rotation);
+        //Instantiate(collectablePrefab[collectableIndex], cSpawnPos, collectablePrefab[collectableIndex].transform.rotation);
+        GameObject collectable = ObjectPooler.Instance.SpawnFromPool("Collectables", cSpawnPos, collectablePrefab[collectableIndex].transform.rotation);
     }
    
 
     
-    //todo objectpooling 
+    
 }

@@ -13,14 +13,17 @@ public class AnimalHunger : MonoBehaviour
     [SerializeField] private int score;
     [SerializeField] private int Dscore;
 
-    private int currentMountFed = 0;
+    //public GameObject animalPrefab;
+
+    private int currentAmountFed = 0;
     private int resetAmount = 0;
     private int minValue = 0;
 
     public Slider hungerSlider;
     private GameManager gameManager;
     private AudioManager audioManager;
-    //private PoolManager poolManager;
+
+    public string hurtSound = "Hurt";
 
 
     // Start is called before the first frame update
@@ -32,7 +35,6 @@ public class AnimalHunger : MonoBehaviour
        
         gameManager = GameManager.gameManager;
         audioManager = AudioManager.audioManager;
-        //poolManager = PoolManager.poolManager;
     }
 
     // Update is called once per frame
@@ -41,35 +43,35 @@ public class AnimalHunger : MonoBehaviour
         AnimalMovements();
     }
 
-    void AnimalMovements()
+    public void AnimalMovements()
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
         if (transform.position.z > topBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else if (transform.position.z < lowerBound)
         {
             gameManager.loseHealth();
             gameObject.SetActive(false);
-            audioManager.PlayerAudio();
+            audioManager.PlaySFX(hurtSound);
         }
     }
 
     public void FeedAnimal(int amount)
     {
-        currentMountFed += amount;
+        currentAmountFed += amount;
         hungerSlider.fillRect.gameObject.SetActive(true);
-        hungerSlider.value = currentMountFed;
+        hungerSlider.value = currentAmountFed;
         
        
-        if (currentMountFed >= amountToFed)
+        if (currentAmountFed >= amountToFed)
         {
             gameObject.SetActive(false);
             hungerSlider.value = minValue;
             hungerSlider.fillRect.gameObject.SetActive(false);
-            currentMountFed = resetAmount;
+            currentAmountFed = resetAmount;
         }
 
         if(gameManager.player.hasDScorePowerUp)
@@ -88,12 +90,11 @@ public class AnimalHunger : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            
-            audioManager.PlayerAudio();
+
+            audioManager.PlaySFX(hurtSound);
             gameManager.loseHealth();
             gameObject.SetActive(false);
         }
-        
     }
 
 }

@@ -25,14 +25,11 @@ public class ScenesManager : MonoBehaviour
     public void play()
     {
         SceneManager.LoadScene(game);
-    }
-
-    public void Restart()
-    {
         Time.timeScale = 1f;
         gameManager.ResetScore();
-        SceneManager.LoadScene(game);
+
     }
+
 
     public void Quit()
     {

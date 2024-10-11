@@ -22,12 +22,12 @@ public class MoveForward : MonoBehaviour
 
         if (transform.position.z > topBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else if(transform.position.z < lowerBound)
         {
             GameManager.gameManager.loseHealth();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

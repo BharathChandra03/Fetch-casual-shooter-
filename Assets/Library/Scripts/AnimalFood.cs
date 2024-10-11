@@ -10,14 +10,16 @@ public class AnimalFood : MonoBehaviour
 
     [SerializeField] private int amount;
 
+    //public GameObject player;
+
     private AudioManager audioManager;
-    //private PoolManager poolManager;
+
+    public string foodSound = "Food";
 
     // Start is called before the first frame update
     void Start()
     {
         audioManager = AudioManager.audioManager;
-        //poolManager = PoolManager.poolManager;
     }
 
     // Update is called once per frame
@@ -32,11 +34,11 @@ public class AnimalFood : MonoBehaviour
 
         if (transform.position.z > topBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else if (transform.position.z < lowerBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -44,7 +46,7 @@ public class AnimalFood : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Animal"))
         {
-            audioManager.AnimalFoodAudio();
+            audioManager.PlaySFX(foodSound);
             other.GetComponent<AnimalHunger>().FeedAnimal(amount);
             gameObject.SetActive(false);
         }
