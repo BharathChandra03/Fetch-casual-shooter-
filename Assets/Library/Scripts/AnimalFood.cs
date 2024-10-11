@@ -10,7 +10,7 @@ public class AnimalFood : MonoBehaviour
 
     [SerializeField] private int amount;
 
-    public GameObject player;
+    //public GameObject player;
 
     private AudioManager audioManager;
 
@@ -34,11 +34,11 @@ public class AnimalFood : MonoBehaviour
 
         if (transform.position.z > topBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else if (transform.position.z < lowerBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
@@ -48,7 +48,7 @@ public class AnimalFood : MonoBehaviour
         {
             audioManager.PlaySFX(foodSound);
             other.GetComponent<AnimalHunger>().FeedAnimal(amount);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

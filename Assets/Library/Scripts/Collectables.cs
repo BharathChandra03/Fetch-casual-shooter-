@@ -17,16 +17,22 @@ public class Collectables : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CollectableMovements();
+
+    }
+
+    void CollectableMovements()
+    {
         transform.Translate(Vector3.forward.normalized * speed * Time.deltaTime);
 
         if (transform.position.z > topBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else if (transform.position.z < lowerBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
-
     }
-}
+}   
+

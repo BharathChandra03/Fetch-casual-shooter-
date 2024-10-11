@@ -49,7 +49,7 @@ public class AnimalHunger : MonoBehaviour
 
         if (transform.position.z > topBound)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else if (transform.position.z < lowerBound)
         {
@@ -68,7 +68,7 @@ public class AnimalHunger : MonoBehaviour
        
         if (currentAmountFed >= amountToFed)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             hungerSlider.value = minValue;
             hungerSlider.fillRect.gameObject.SetActive(false);
             currentAmountFed = resetAmount;
@@ -93,7 +93,7 @@ public class AnimalHunger : MonoBehaviour
 
             audioManager.PlaySFX(hurtSound);
             gameManager.loseHealth();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

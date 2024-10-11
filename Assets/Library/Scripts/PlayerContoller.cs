@@ -46,7 +46,9 @@ public class PlayerContoller : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(foodPrefab, transform.position, foodPrefab.transform.rotation);
+            //Instantiate(foodPrefab, transform.position, foodPrefab.transform.rotation);
+            GameObject food = ObjectPooler.Instance.SpawnFromPool("AnimalFood", transform.position, transform.rotation);
+            
         }
     }
 
@@ -62,14 +64,14 @@ public class PlayerContoller : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Health"))
         {
             audioManager.PlaySFX(powerUpSound);
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
             gameManager.IncreaseHealth();
         }
 
         if (other.gameObject.layer == LayerMask.NameToLayer("DoubleScore"))
         {
             audioManager.PlaySFX(powerUpSound);
-            Destroy(other.gameObject);
+            other.gameObject.SetActive(false);
             hasDScorePowerUp = true;
 
             if (powerUpCoroutine != null)
