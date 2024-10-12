@@ -5,9 +5,15 @@ using UnityEngine.UI;
 
 public class VolumeSettings : MonoBehaviour
 {
+
     public Slider volumeSlider;
 
+    public static VolumeSettings instance;
 
+    public void Awake()
+    {
+        instance = this;
+    }
     public void Start()
     {
         if(PlayerPrefs.HasKey("sfxVolume"))

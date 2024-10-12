@@ -5562,8 +5562,8 @@ MonoBehaviour:
   topBound: 50
   lowerBound: -5
   amountToFed: 2
-  score: 5
-  Dscore: 10
+  score: 10
+  Dscore: 20
   hungerSlider: {fileID: 8857860692580535412}
   hurtSound: Hurt
 --- !u!1 &6194874050793534060

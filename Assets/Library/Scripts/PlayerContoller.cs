@@ -18,6 +18,7 @@ public class PlayerContoller : MonoBehaviour
     private GameManager gameManager;
 
     public string powerUpSound = "PowerUp";
+    public string hurtSound = "Hurt";
 
     private void Start()
     {
@@ -79,6 +80,14 @@ public class PlayerContoller : MonoBehaviour
                 StopCoroutine(powerUpCoroutine);
             }
             powerUpCoroutine = StartCoroutine(powerUpCoolDown());
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Animal"))
+        {
+
+            audioManager.PlaySFX(hurtSound);
+            gameManager.loseHealth();
+            other.gameObject.SetActive(false);
         }
     }
 

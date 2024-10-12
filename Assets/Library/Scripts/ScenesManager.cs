@@ -25,6 +25,7 @@ public class ScenesManager : MonoBehaviour
     public void play()
     {
         SceneManager.LoadScene(game);
+        VolumeSettings.instance.LoadVolume();
         Time.timeScale = 1f;
         gameManager.ResetScore();
 
@@ -33,7 +34,9 @@ public class ScenesManager : MonoBehaviour
 
     public void Quit()
     {
+        VolumeSettings.instance.LoadVolume();
         Application.Quit();
+
     }
 
     public void MainMenu()
