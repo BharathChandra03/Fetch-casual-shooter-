@@ -18,39 +18,77 @@ public class ScenesManager : MonoBehaviour
 
     private void Start()
     {
-        gameManager = GameManager.gameManager;
-        audioManager = AudioManager.audioManager;
+        if (GameManager.gameManager != null)
+            gameManager = GameManager.gameManager;
+        else
+            Debug.LogError("GameManager is not found in SceneManager");
+
+        if (AudioManager.audioManager != null)
+            audioManager = AudioManager.audioManager;
+        else
+            Debug.LogError("AudioManager is not found in SceneManager");
+        
+
     }
 
     public void play()
     {
         SceneManager.LoadScene(game);
-        VolumeSettings.instance.LoadVolume();
+
+        if(VolumeSettings.instance != null)
+            VolumeSettings.instance.LoadVolume();
+        else
+            Debug.LogError("VolumeSettings instance is not found in SceneManager");
+        
         Time.timeScale = 1f;
-        gameManager.ResetScore();
-
-    }
-
-
-    public void Quit()
-    {
-        VolumeSettings.instance.LoadVolume();
-        Application.Quit();
-
+        
+        if (gameManager != null)
+        {
+            gameManager.ResetScore();
+        }
     }
 
     public void MainMenu()
     {
         SceneManager.LoadScene(mainmenu);
+        if (gameManager != null)
+        {
+            Time.timeScale = 1f;
+            gameManager.SetGameState(GameState.MainMenu);
+        }
     }
 
     public void TitleScreen()
     {
         SceneManager.LoadScene(titleScreen);
+        if(gameManager != null)
+        {
+            Time.timeScale = 1f;
+            gameManager.SetGameState(GameState.MainMenu);
+        }
     }
 
     public void Audio()
     {
         SceneManager.LoadScene(gameAudio);
+       
     }
+
+    public void Quit()
+    {
+        if(VolumeSettings.instance != null)
+            VolumeSettings.instance.LoadVolume();
+
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
+   
+
+    
+
+    
 }

@@ -28,14 +28,14 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
         AudioMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        gameManager.SetGameState(GameState.Playing);
         gameIsPaused = false;
     }
 
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
+        gameManager.SetGameState(GameState.Paused);
         gameIsPaused = true;
     }
 
@@ -47,6 +47,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Restart()
     {
+        gameManager.SetGameState(GameState.Playing);
         Time.timeScale = 1f;
         gameManager.ResetScore();
         SceneManager.LoadScene(game);
@@ -56,6 +57,16 @@ public class PauseMenu : MonoBehaviour
     {
         gameManager.ResetScore();
         SceneManager.LoadScene(mainmenu);
-        
+        //SceneManager.LoadScene(mainmenu);
+        //gameManager.currentState = GameState.MainMenu;
+      /*  if (gameManager != null)
+        {
+            gameManager.currentState = GameState.MainMenu;
+        }
+        else
+        {
+            Debug.LogWarning("GameManager is null in MainMenu().");
+        }*/
+
     }
 }

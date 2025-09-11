@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +13,22 @@ public class VolumeSettings : MonoBehaviour
 
     public void Awake()
     {
-        instance = this;
+        if(instance = this)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); //prevents the volume settings from being destroyed when loading a new scene
+        }
+        else
+        {
+            Destroy(gameObject); //ensures only one instance of the volume settings exists
+        }
+        
     }
+
     public void Start()
     {
+        volumeSlider.onValueChanged.AddListener(delegate { SetVolume(); });
+
         if(PlayerPrefs.HasKey("sfxVolume"))
         {
             LoadVolume();
@@ -30,7 +43,9 @@ public class VolumeSettings : MonoBehaviour
     {
         AudioListener.volume = volumeSlider.value;
         PlayerPrefs.SetFloat("sfxVolume", AudioListener.volume);
+        PlayerPrefs.Save();
     }
+
     public void LoadVolume()
     {
         volumeSlider.value = PlayerPrefs.GetFloat("sfxVolume");

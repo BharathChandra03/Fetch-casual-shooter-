@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
         public AudioClip clip;
 
     }
-
+    [Header("Sound Effects")]
     public NamedSfx[] sfxClips;
 
     private void Awake()
@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("SFX withe name " + name + "not found");
+            Debug.LogWarning("SFX with the name " + name + "not found");
         }
     }
 }

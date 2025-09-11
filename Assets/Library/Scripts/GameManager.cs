@@ -4,13 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Android;
 
+
+public enum GameState
+{
+    MainMenu,
+    Playing,
+    Paused,
+    Gameover
+}
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager;
-    
+
+    public int CurrentScore { get; private set; }
+
+    public GameState currentState;
+
     public TextMeshProUGUI scoreText;
-    public static int score = 0;
+    //public static int score = 0;
     
     public int health = 3;
     public int numOfHearts;
@@ -19,30 +32,115 @@ public class GameManager : MonoBehaviour
 
     public PlayerContoller player;
 
-    private int currentScore = score;
+    //private int currentScore = score;
 
     const string gameOver = "GameOver";
 
-    
+    private List<int> topScores = new List<int>();
+    private const int maxHighScores = 5;
+
     private void Awake()
     {
-        gameManager = this;
-
-    }
-
-    public static GameManager Instance
-    {
-        get
+        if(gameManager == null) // Singleton pattern to ensure only one instance of GameManager exists
         {
-            return gameManager;
+            gameManager = this; // Set the static instance to this instance
+            DontDestroyOnLoad(gameObject); // Prevent this object from being destroyed when loading a new scene
+            LoadScore();
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy this instance if another instance already exists
         }
     }
-
-
     private void Start()
     {
         UpdateScoreText();
-       
+        HeartSystem();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Game")
+        {
+            var scoreObj = GameObject.Find("ScoreText");
+            if(scoreObj != null)
+            {
+                scoreText = scoreObj.GetComponent<TextMeshProUGUI>();
+                UpdateScoreText();
+            }
+            else
+            {
+                Debug.LogWarning("ScoreText not found in scene" + scene.name);
+            }
+        }
+        
+    }
+    public void ResetScore()
+    {
+        CurrentScore = 0;
+    }
+    public void UpdateScore(int value)
+    {
+        CurrentScore += value;
+        UpdateScoreText();
+    }
+    public void UpdateScoreText()
+    {
+        scoreText.text = CurrentScore.ToString();
+    }
+
+    public void SaveFinalScore() // Save the final score to the top scores list
+    {
+        PlayerPrefs.SetInt("LastScore", CurrentScore); // Save the last score for display on the game over screen
+
+        topScores.Add(CurrentScore); // Add the new score to the list
+        topScores.Sort((a, b) => b.CompareTo(a)); // Sort the list in descending order
+
+        if (topScores.Count > maxHighScores) // If the list exceeds the maximum number of high scores
+        {
+            topScores.RemoveAt(topScores.Count - 1); // Remove the lowest score
+        }
+
+        //PlayerPrefs.Save(); // Ensure the data is written to disk
+        SaveScores(); // Save the updated top scores to PlayerPrefs
+    }
+
+    private void SaveScores() // Save the top scores to PlayerPrefs
+    {
+        for (int i = 0; i < topScores.Count; i++) // Iterate through the top scores list
+        {
+            PlayerPrefs.SetInt("Score" + i, topScores[i]); // Save each score with a unique key
+        }
+
+        PlayerPrefs.SetInt("ScoreCount", topScores.Count); // Save the count of scores
+        PlayerPrefs.Save(); // Ensure the data is written to disk
+    }
+
+    private void LoadScore()
+    {
+        topScores.Clear(); // Clear the current list of top scores
+
+        int count = PlayerPrefs.GetInt("ScoreCount", 0); // Get the count of saved scores
+
+        for (int i = 0; i < count; i++) // Iterate through the saved scores
+        {
+            topScores.Add(PlayerPrefs.GetInt("Score" + i)); // Load each score and add it to the list
+        }
+    }
+
+    public List<int> GetTopScores() // Get a copy of the top scores list
+    {
+        return new List<int>(topScores); // Return a new list containing the top scores
     }
 
     private void HeartSystem()
@@ -67,47 +165,52 @@ public class GameManager : MonoBehaviour
 
         }
     }
-
-
-    public void UpdateScore(int value)
-    {
-        score += value;
-        UpdateScoreText();
-    }
-
-    public void UpdateScoreText()
-    {
-        scoreText.text = score.ToString();
-    }
-     
     public void loseHealth()
     {
         health--;
         HeartSystem();
         PlayerDead();
     }
-    
     public void IncreaseHealth()
     {
-        if (health < 3)
+        if (health < numOfHearts)
         {
            health++;
            HeartSystem();
         }
     }
 
-    public void ResetScore()
-    {
-        score = 0;
-    }
-
-    
     public void PlayerDead()
     {
         if (health == 0)
         {
+            SaveFinalScore();
+            SetGameState(GameState.Gameover);
             SceneManager.LoadScene(gameOver);
-            scoreText.text = "Score : " + currentScore.ToString();
         }
+    }
+    public void SetGameState(GameState newState)
+    {
+        currentState = newState;
+
+        switch (newState)
+        {
+            case GameState.MainMenu:
+                Time.timeScale = 1f;
+                break;
+
+            case GameState.Playing:
+                Time.timeScale = 1f;
+                break;
+
+            case GameState.Paused:
+                Time.timeScale = 0f;
+                break;
+
+            case GameState.Gameover:
+                Time.timeScale = 0f;
+                break;
+        }
+
     }
 }
